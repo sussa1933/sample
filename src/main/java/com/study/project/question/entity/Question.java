@@ -2,10 +2,14 @@ package com.study.project.question.entity;
 
 
 import com.study.project.answer.entity.Answer;
+import com.study.project.audit.Auditable;
 import com.study.project.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -16,7 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Table(name = "questions")
-public class Question {
+public class Question extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +51,8 @@ public class Question {
         return Question.builder()
                 .subject(subject)
                 .content(content)
+                .answerList(new LinkedHashSet<>())
+                .voter(new LinkedHashSet<>())
                 .build();
     }
 

@@ -39,12 +39,18 @@ public class QuestionService {
         return QuestionResponseDto.of(saveQuestion);
     }
 
-    @Transactional
-    public QuestionResponseDto findQuestion(Long questionId) {
+    public QuestionResponseDto findQuestionDetail(Long questionId) {
         Optional<Question> question = questionJpaRepository.findById(questionId);
         Question findQuestion = question.orElseThrow(() -> new RuntimeException("Question Not Found,Bad Request"));
         return QuestionResponseDto.of(findQuestion);
     }
+
+    public QuestionSimpleResponseDto findSimpleQuestion(Long questionId) {
+        Optional<Question> question = questionJpaRepository.findById(questionId);
+        Question findQuestion = question.orElseThrow(() -> new RuntimeException("Question Not Found,Bad Request"));
+        return QuestionSimpleResponseDto.of(findQuestion);
+    }
+
 
     @Transactional
     public Page<QuestionSimpleResponseDto> findQuestionList(int page, String kw) {

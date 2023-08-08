@@ -1,6 +1,7 @@
 package com.study.project.user.service;
 
 import com.study.project.user.dto.UserRequestDto;
+import com.study.project.user.dto.UserResponseDto;
 import com.study.project.user.entity.User;
 import com.study.project.user.repository.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,13 +13,20 @@ public class UserService {
 
     private final UserJpaRepository userJpaRepository;
 
-    public User createUser(UserRequestDto dto) {
+    public UserResponseDto createUser(UserRequestDto dto) {
         String email = dto.getEmail();
         String username = dto.getUsername();
-        String password = dto.getPassword1();
+        String password = dto.getPassword();
         User user = User.createUser(email, username, password);
-        User save = userJpaRepository.save(user);
-        return save;
+        User saveUser = userJpaRepository.save(user);
+        return UserResponseDto.of(saveUser);
+    }
+
+    public UserResponseDto findUser(String username) {
+        User findUser = userJpaRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User Not Found, Bad Request"));
+
+        return UserResponseDto.of(findUser);
     }
 
 

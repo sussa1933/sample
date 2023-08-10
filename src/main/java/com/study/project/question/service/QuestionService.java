@@ -1,5 +1,6 @@
 package com.study.project.question.service;
 
+import com.study.project.answer.service.AnswerService;
 import com.study.project.question.dto.QuestionRequestDto;
 import com.study.project.question.dto.QuestionResponseDto;
 import com.study.project.question.dto.QuestionSimpleResponseDto;
@@ -82,10 +83,10 @@ public class QuestionService {
     }
 
     @Transactional
-    public void voteQuestion(Long questionId, Long userId) {
+    public void voteQuestion(Long questionId, String username) {
         Question findQuestion = questionJpaRepository.findById(questionId)
                 .orElseThrow(() -> new RuntimeException("Question Not Found, Bad Request"));
-        User findUser = userJpaRepository.findById(userId)
+        User findUser = userJpaRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User Not Found, Bad Request"));
         findQuestion.getVoter().add(findUser);
         questionJpaRepository.save(findQuestion);

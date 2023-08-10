@@ -18,6 +18,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "answers")
 public class Answer extends Auditable {
 
@@ -38,6 +39,21 @@ public class Answer extends Auditable {
 
     @ManyToMany
     Set<User> voter = new LinkedHashSet<>();
+
+    public static Answer createAnswer(String content) {
+        return Answer.builder()
+                .content(content)
+                .voter(new LinkedHashSet<>())
+                .build();
+    }
+
+    public void addQuestion(Question question) {
+        this.question = question;
+    }
+
+    public void addAuthor(User user) {
+        this.author = user;
+    }
 
 
 }

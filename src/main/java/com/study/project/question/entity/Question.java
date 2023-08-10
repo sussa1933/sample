@@ -61,5 +61,10 @@ public class Question extends Auditable {
         author.addQuestion(this);
     }
 
+    public void addAnswer(Answer answer) {
+        this.answerList.add(answer);
+        answer.addQuestion(this);
+    }
+
 
 }

@@ -28,7 +28,7 @@ public class QuestionController {
                 .password("pw1")
                 .build());
         QuestionRequestDto dto = QuestionRequestDto.builder()
-                .authorId(1L)
+                .authorUsername("test")
                 .content("test")
                 .subject("test")
                 .build();

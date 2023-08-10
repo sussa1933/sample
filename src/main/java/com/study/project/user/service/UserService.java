@@ -25,9 +25,7 @@ public class UserService {
     public UserResponseDto findUser(String username) {
         User findUser = userJpaRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User Not Found, Bad Request"));
-
         return UserResponseDto.of(findUser);
     }
-
 
 }

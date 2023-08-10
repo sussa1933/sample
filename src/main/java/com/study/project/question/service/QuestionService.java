@@ -30,8 +30,8 @@ public class QuestionService {
     public QuestionResponseDto createQuestion(QuestionRequestDto dto) {
         String subject = dto.getSubject();
         String content = dto.getContent();
-        Long authorId = dto.getAuthorId();
-        Optional<User> findUser = userJpaRepository.findById(authorId);
+        String username = dto.getAuthorUsername();
+        Optional<User> findUser = userJpaRepository.findByUsername(username);
         User user = findUser.orElseThrow(() -> new RuntimeException("Question NOT FOUND, Bad Request"));
         Question question = Question.createQuestion(subject, content);
         question.addAuthor(user);

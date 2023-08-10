@@ -44,7 +44,7 @@ public class ServiceLogicTest {
     void createQuestionService() {
         // Given
         QuestionRequestDto questionRequestDto = QuestionRequestDto.builder()
-                .authorId(1L)
+                .authorUsername("test")
                 .subject("TestSubject")
                 .content("TestContent")
                 .build();
@@ -68,17 +68,17 @@ public class ServiceLogicTest {
     void findQuestionList() {
         //Given
         QuestionRequestDto questionRequestDto1 = QuestionRequestDto.builder()
-                .authorId(1L)
+                .authorUsername("test")
                 .subject("abc")
                 .content("abc")
                 .build();
         QuestionRequestDto questionRequestDto2 = QuestionRequestDto.builder()
-                .authorId(1L)
+                .authorUsername("test")
                 .subject("def")
                 .content("ghk")
                 .build();
         QuestionRequestDto questionRequestDto3 = QuestionRequestDto.builder()
-                .authorId(1L)
+                .authorUsername("test")
                 .subject("abc")
                 .content("def")
                 .build();

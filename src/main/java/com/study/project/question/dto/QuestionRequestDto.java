@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class QuestionRequestDto {
 
-    private Long authorId;
+    private String authorUsername;
 
     private String subject;
 

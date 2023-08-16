@@ -19,6 +19,8 @@ public class AnswerResponseDto {
 
     private Long id;
 
+    private Long questionId;
+
     private String content;
 
     private UserResponseDto author;
@@ -36,8 +38,10 @@ public class AnswerResponseDto {
                 .toList();
         return AnswerResponseDto.builder()
                 .id(answer.getId())
+                .questionId(answer.getQuestion().getId())
                 .content(answer.getContent())
                 .voter(responseDtoList)
+                .author(UserResponseDto.of(answer.getAuthor()))
                 .createDate(answer.getCreateDate())
                 .modifyDate(answer.getModifyDate())
                 .build();

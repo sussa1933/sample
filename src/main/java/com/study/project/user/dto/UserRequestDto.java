@@ -14,4 +14,12 @@ public class UserRequestDto {
 
     private String password;
 
+    public static UserRequestDto of(UserCreateForm createForm) {
+        return UserRequestDto.builder()
+                .username(createForm.getUsername())
+                .password(createForm.getPassword1())
+                .email(createForm.getEmail())
+                .build();
+    }
+
 }

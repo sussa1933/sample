@@ -5,9 +5,10 @@ import com.study.project.answer.dto.AnswerRequestDto;
 import com.study.project.answer.dto.AnswerResponseDto;
 import com.study.project.answer.entity.Answer;
 import com.study.project.answer.repository.AnswerJpaRepository;
+import com.study.project.exception.ErrorCode;
+import com.study.project.exception.ServiceLogicException;
 import com.study.project.question.entity.Question;
 import com.study.project.question.repository.QuestionJpaRepository;
-import com.study.project.question.service.QuestionService;
 import com.study.project.user.entity.User;
 import com.study.project.user.repository.UserJpaRepository;
 import jakarta.transaction.Transactional;
@@ -45,9 +46,16 @@ public class AnswerService {
     }
 
     @Transactional
-    public AnswerResponseDto modifyAnswer(Long answerId, String content) {
+    public AnswerResponseDto modifyAnswer(
+            Long answerId,
+            String content,
+            String username
+    ) {
         Answer findAnswer = answerJpaRepository.findById(answerId)
                 .orElseThrow(() -> new RuntimeException("Not Found, Bad Request"));
+        if (!username.equals(findAnswer.getAuthor().getUsername())) {
+            throw new ServiceLogicException(ErrorCode.ACCESS_DENIED);
+        }
         findAnswer.setContent(content);
         Answer saveAnswer = answerJpaRepository.save(findAnswer);
         return AnswerResponseDto.of(saveAnswer);
@@ -60,17 +68,26 @@ public class AnswerService {
     }
 
     @Transactional
-    public void deleteAnswer(Long answerId) {
-        answerJpaRepository.deleteById(answerId);
+    public Long deleteAnswer(Long answerId, String username) {
+        Answer findAnswer = answerJpaRepository.findById(answerId)
+                .orElseThrow(() -> new RuntimeException("Not Found, Bad Request"));
+        Long questionId = findAnswer.getQuestion().getId();
+        if (!username.equals(findAnswer.getAuthor().getUsername())) {
+            throw new ServiceLogicException(ErrorCode.ACCESS_DENIED);
+        }
+        answerJpaRepository.delete(findAnswer);
+        return questionId;
     }
 
     @Transactional
-    public void voteQuestion(Long answerId, String username) {
+    public Long voteAnswer(Long answerId, String username) {
         User findUser = userJpaRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User Not Found, Bad Request"));
         Answer findAnswer = answerJpaRepository.findById(answerId)
                 .orElseThrow(() -> new RuntimeException("User Not Found, Bad Request"));
+        Long questionId = findAnswer.getQuestion().getId();
         findAnswer.getVoter().add(findUser);
         answerJpaRepository.save(findAnswer);
+        return questionId;
     }
 }

@@ -1,6 +1,7 @@
 package com.study.project.question.service;
 
-import com.study.project.answer.service.AnswerService;
+import com.study.project.exception.ErrorCode;
+import com.study.project.exception.ServiceLogicException;
 import com.study.project.question.dto.QuestionRequestDto;
 import com.study.project.question.dto.QuestionResponseDto;
 import com.study.project.question.dto.QuestionSimpleResponseDto;
@@ -71,6 +72,9 @@ public class QuestionService {
     public QuestionResponseDto modifyQuestion(Long questionId, QuestionRequestDto dto) {
         Optional<Question> question = questionJpaRepository.findById(questionId);
         Question findQuestion = question.orElseThrow(() -> new RuntimeException("Question Not Found, Bad Request"));
+        if (!findQuestion.getAuthor().getUsername().equals(dto.getAuthorUsername())) {
+            throw new ServiceLogicException(ErrorCode.ACCESS_DENIED);
+        }
         findQuestion.setContent(dto.getContent());
         findQuestion.setSubject(dto.getSubject());
         Question updateQuestion = questionJpaRepository.save(findQuestion);
@@ -78,8 +82,13 @@ public class QuestionService {
     }
 
     @Transactional
-    public void deleteQuestion(Long questionId) {
-        questionJpaRepository.deleteById(questionId);
+    public void deleteQuestion(Long questionId, String username) {
+        Question findQuestion = questionJpaRepository.findById(questionId)
+                .orElseThrow(() -> new RuntimeException("Bad Request"));
+        if (!findQuestion.getAuthor().getUsername().equals(username)) {
+            throw new ServiceLogicException(ErrorCode.ACCESS_DENIED);
+        }
+        questionJpaRepository.delete(findQuestion);
     }
 
     @Transactional

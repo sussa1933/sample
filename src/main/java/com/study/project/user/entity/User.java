@@ -5,11 +5,10 @@ import com.study.project.audit.Auditable;
 import com.study.project.question.entity.Question;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -43,6 +42,9 @@ public class User extends Auditable {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id")
     private Set<Answer> answerList = new LinkedHashSet<>();
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
     public static User createUser(String email, String username, String password) {
         User user = User.builder()

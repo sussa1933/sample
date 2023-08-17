@@ -15,7 +15,7 @@
     <h5 class="my-3 border-bottom pb-2">질문수정</h5>
     <form id="questionForm" th:action="@{/question/modify/}+${questionId}" th:object="${questionForm}" method="post">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
-        <input type="hidden" id="csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}">
+<!--        <input type="hidden" id="csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}">-->
         <div class="mb-3">
             <label for="subject" class="form-label">제목</label>
             <input id="subject" name="subject" th:field="*{subject}" type="text"  class="form-control">

@@ -6,8 +6,8 @@ values
 
 insert into `user_roles`(`user_id`, `roles`)
 values
-    (1, 'USER_ROLE'),
-    (2, 'USER_ROLE')
+    (1, 'USER'),
+    (2, 'USER')
 ;
 
 insert into `questions`(`subject`, `content`, `author_id`)

@@ -1,4 +1,4 @@
-package com.study.project.auth.jwt.utils;
+package com.study.project.auth;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class JwtAuthorityUtils {
+public class UserRoleUtils {
 
     private final String adminUsername = "admin";
 
